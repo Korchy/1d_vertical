@@ -12,7 +12,10 @@ class VerticalPanel(bpy.types.Panel):
     bl_category = "Vertical"
 
     def draw(self, context):
-        self.layout.operator("vertical.select", text="Vertical Test")
+        button = self.layout.operator("vertical.select", text="Vertical Test 0")
+        button.algorithm = 0
+        button = self.layout.operator("vertical.select", text="Vertical Test 1")
+        button.algorithm = 1
 
 
 def register():
