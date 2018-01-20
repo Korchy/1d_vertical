@@ -1,5 +1,8 @@
 # Nikita Akimov
 # interplanety@interplanety.org
+#
+# GitHub
+# https://github.com/Korchy/1d_vertical
 
 bl_info = {
     'name': 'vertical',
