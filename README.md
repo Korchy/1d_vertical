@@ -1,31 +1,30 @@
 # 1d_vertical
 
-**Проверка**
+Blender add-on to search and select the vertical polygons of the mesh.
 
-Для показа работы весь код представлен в виде аддона.
+**Installation**
 
-Для проверки скачать код:
-Clone or download - download ZIP - открыть Blender - установить аддон обычным образом (Install add-on From File)
+User Preferences - Add-ons - Install Add-on from File - select downloaded archive
 
-В Т-панели, вкладка Vertical:
+**Usage**
 
-Две кнопки - две версии алгоритма:
-- Vertical Test 0 - проверяется длина максимальной проекции ребра полигона на ось Z
-- Vertical Test 1 - проверяется максимальная проекция полигона на ось Z (соответствует ТЗ)
+Location: "3D_View" window - T-tab - "Vertical" panel
 
-На тестовой сцене оба алгоритма выдают одинаковый результат.
+Two buttons - different algorithms:
+- Vertical Test 0 - checks the length of the maximum projection of the edge of the polygon on the Z axis
+- Vertical Test 1 - checks the maximum projection of the whole polygon on the Z axis
 
-**Встраивание**
+**Including**
 
-Для включения в другой проект необходм только модуль vertical.py
+You need the module vertical.py
 
-После регистрации данного модуля в Blender API стандартным способом (вызов функции register) для вызова доступен оператор:
+Register this module in your add-on (with calling the "register" function)
+
+Use it by calling the operator:
 
     bpy.ops.vertical.select()
 
-У оператора есть один параметр algorithm, дефолтное значение = 1, что соответсвует вызову алгоритма 1 (соответствует в ТЗ)
-
-Для вызова оператора с версией алгоритма 0, нужно передать указание в параметре:
+The default algorithm is number 1. To call the operator with the second algorithm, specify it in the operator parameters:
 
     bpy.ops.vertical.select(algorithm=0)
 
