@@ -11,8 +11,8 @@ User Preferences - Add-ons - Install Add-on from File - select downloaded archiv
 Location: "3D_View" window - T-tab - "Vertical" panel
 
 Two buttons - different algorithms:
-- Vertical Test 0 - checks the length of the maximum projection of the edge of the polygon on the Z axis
-- Vertical Test 1 - checks the maximum projection of the whole polygon on the Z axis
+- Vertical 0 - checks the length of the maximum projection of the edge of the polygon on the Z axis
+- Vertical 1 - checks the maximum projection of the whole polygon on the Z axis
 
 **Including**
 
