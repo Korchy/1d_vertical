@@ -6,7 +6,7 @@
 #
 # Version history:
 #   1.0 (2018.02.01) - release
-#   1.1 (2018.06.08) - improve - added Y and X axis, starting from object mode
+#   1.1 (2018.06.08) - improve - added Y and X axis
 
 bl_info = {
     'name': 'vertical',
