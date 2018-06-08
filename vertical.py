@@ -2,7 +2,19 @@
 # interplanety@interplanety.org
 #
 # GitHub
-# https://github.com/Korchy/1d_vertical
+#   https://github.com/Korchy/1d_vertical
+#
+# Version history:
+#   1.0 (2018.02.01) - release
+#   1.1 (2018.06.08) - improve - added Y and X axis, starting from object mode
+
+bl_info = {
+    'name': 'vertical',
+    'category': 'Mesh',
+    'author': 'Nikita Akimov',
+    'version': (0, 0, 0),
+    'blender': (2, 79, 0)
+}
 
 import bpy
 import math
@@ -16,6 +28,8 @@ class Vertical(bpy.types.Operator):
     algorithm = bpy.props.IntProperty(name='algorithm', default=1)
 
     def execute(self, context):
+        # print(context.window_manager.interface_vars.axis)
+        # return
         if context.active_object:
             if context.active_object.mode != 'EDIT':
                 bpy.ops.object.mode_set(mode='EDIT')
@@ -46,7 +60,12 @@ class Vertical(bpy.types.Operator):
                         mlx = lx if not mlx or lx > mlx else mlx
                         ly = math.fabs(activeobjectdata.vertices[edge[0]].co[1] - activeobjectdata.vertices[edge[1]].co[1])
                         mly = ly if not mly or ly > mly else mly
-                if mlz >= mlx and mlz >= mly:
+                # check vertical
+                if context.window_manager.interface_vars.axis == 'Z' and mlz >= mlx and mlz >= mly:
+                    polygon.select = True
+                elif context.window_manager.interface_vars.axis == 'X' and mlx >= mlz and mlx >= mly:
+                    polygon.select = True
+                elif context.window_manager.interface_vars.axis == 'Y' and mly >= mlx and mly >= mlz:
                     polygon.select = True
             bpy.ops.object.mode_set(mode='EDIT')
         return {'FINISHED'}
@@ -57,9 +76,46 @@ class Vertical(bpy.types.Operator):
     #     return context.active_object.mode == 'EDIT'
 
 
+class InterfaceVars(bpy.types.PropertyGroup):
+    axis = bpy.props.EnumProperty(
+        items=[
+            ('X', 'X', 'X', '', 0),
+            ('Y', 'Y', 'Y', '', 1),
+            ('Z', 'Z', 'Z', '', 2),
+        ],
+        default='Z'
+    )
+
+
+class VerticalPanel(bpy.types.Panel):
+    bl_idname = 'vertical.panel'
+    bl_label = 'Vertical'
+    bl_space_type = 'VIEW_3D'
+    bl_region_type = 'TOOLS'
+    bl_category = '1D'
+
+    def draw(self, context):
+        button = self.layout.operator('vertical.select', text='Vertical 0')
+        button.algorithm = 0
+        button = self.layout.operator('vertical.select', text='Vertical 1')
+        button.algorithm = 1
+        row = self.layout.row()
+        row.prop(context.window_manager.interface_vars, 'axis', expand=True)
+
+
 def register():
     bpy.utils.register_class(Vertical)
+    bpy.utils.register_class(VerticalPanel)
+    bpy.utils.register_class(InterfaceVars)
+    bpy.types.WindowManager.interface_vars = bpy.props.PointerProperty(type=InterfaceVars)
 
 
 def unregister():
+    del bpy.types.WindowManager.interface_vars
+    bpy.utils.unregister_class(InterfaceVars)
+    bpy.utils.unregister_class(VerticalPanel)
     bpy.utils.unregister_class(Vertical)
+
+
+if __name__ == '__main__':
+    register()
