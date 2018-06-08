@@ -7,12 +7,13 @@
 # Version history:
 #   1.0 (2018.02.01) - release
 #   1.1 (2018.06.08) - improve - added Y and X axis
+#   1.2 (2018.06.08) - improve - work in both object and edit mode
 
 bl_info = {
     'name': 'vertical',
     'category': 'Mesh',
     'author': 'Nikita Akimov',
-    'version': (1, 1, 0),
+    'version': (1, 2, 0),
     'blender': (2, 79, 0)
 }
 
@@ -28,15 +29,28 @@ class Vertical(bpy.types.Operator):
     algorithm = bpy.props.IntProperty(name='algorithm', default=1)
 
     def execute(self, context):
-        # print(context.window_manager.interface_vars.axis)
-        # return
-        if context.active_object:
+        active = context.active_object
+        mode = context.active_object.mode
+        if context.active_object.mode == 'OBJECT':
+            selection = context.selected_objects[:]
+        else:
+            bpy.ops.object.mode_set(mode='OBJECT')
+            selection = [context.active_object]
+        for obj in selection:
+            self.selectVerticalPolygons(context, obj)
+        context.scene.objects.active = active
+        bpy.ops.object.mode_set(mode=mode)
+        return {'FINISHED'}
+
+    def selectVerticalPolygons(self, context, obj):
+        if obj:
+            context.scene.objects.active = obj
             if context.active_object.mode != 'EDIT':
                 bpy.ops.object.mode_set(mode='EDIT')
             bpy.ops.mesh.select_all(action='DESELECT')
             bpy.ops.mesh.select_mode(type='FACE')
             bpy.ops.object.mode_set(mode='OBJECT')
-            activeobjectdata = bpy.context.active_object.data
+            activeobjectdata = obj.data
             for polygon in activeobjectdata.polygons:
                 mlx = mly = mlz = None
                 if self.algorithm == 0:
@@ -67,13 +81,6 @@ class Vertical(bpy.types.Operator):
                     polygon.select = True
                 elif context.window_manager.interface_vars.axis == 'Y' and mly >= mlx and mly >= mlz:
                     polygon.select = True
-            bpy.ops.object.mode_set(mode='EDIT')
-        return {'FINISHED'}
-
-    # раскомментировать 3 след. строчки если нужна блокировка в объектном режиме
-    # @classmethod
-    # def poll(cls, context):
-    #     return context.active_object.mode == 'EDIT'
 
 
 class InterfaceVars(bpy.types.PropertyGroup):
