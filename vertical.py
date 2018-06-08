@@ -12,7 +12,7 @@ bl_info = {
     'name': 'vertical',
     'category': 'Mesh',
     'author': 'Nikita Akimov',
-    'version': (0, 0, 0),
+    'version': (1, 1, 0),
     'blender': (2, 79, 0)
 }
 
