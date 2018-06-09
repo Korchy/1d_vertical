@@ -9,7 +9,7 @@
 #   1.1 (2018.06.08) - improve - added Y and X axis
 #   1.2 (2018.06.08) - improve - work in both object and edit mode
 #   1.3 (2018.06.09) - improve - uv 90-deg rotation
-#   1.4 (2018.06.09) - improve - invert selection
+#   1.4 (2018.06.09) - improve - rotate not selected uv polygons
 
 bl_info = {
     'name': 'vertical',
@@ -42,10 +42,6 @@ class Vertical(bpy.types.Operator):
         for obj in selection:
             self.selectVerticalPolygons(context, obj)
             if context.window_manager.interface_vars.rotate_uv:
-                # if context.window_manager.interface_vars.rotate_uv_invert_selection:
-                #     bpy.ops.object.mode_set(mode='EDIT')
-                #     bpy.ops.object.select_all(action='INVERT')
-                #     bpy.ops.object.mode_set(mode='OBJECT')
                 if context.window_manager.interface_vars.rotate_origin == '0':
                     UV.rotate_selection(obj, (0, 0), __class__.uv_rotation_angle)
                 elif context.window_manager.interface_vars.rotate_origin == '1':
