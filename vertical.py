@@ -9,12 +9,13 @@
 #   1.1 (2018.06.08) - improve - added Y and X axis
 #   1.2 (2018.06.08) - improve - work in both object and edit mode
 #   1.3 (2018.06.09) - improve - uv 90-deg rotation
+#   1.4 (2018.06.09) - improve - invert selection
 
 bl_info = {
     'name': 'vertical',
     'category': 'Mesh',
     'author': 'Nikita Akimov',
-    'version': (1, 3, 0),
+    'version': (1, 4, 0),
     'blender': (2, 79, 0)
 }
 
