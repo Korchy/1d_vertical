@@ -41,6 +41,10 @@ class Vertical(bpy.types.Operator):
         for obj in selection:
             self.selectVerticalPolygons(context, obj)
             if context.window_manager.interface_vars.rotate_uv:
+                # if context.window_manager.interface_vars.rotate_uv_invert_selection:
+                #     bpy.ops.object.mode_set(mode='EDIT')
+                #     bpy.ops.object.select_all(action='INVERT')
+                #     bpy.ops.object.mode_set(mode='OBJECT')
                 if context.window_manager.interface_vars.rotate_origin == '0':
                     UV.rotate_selection(obj, (0, 0), __class__.uv_rotation_angle)
                 elif context.window_manager.interface_vars.rotate_origin == '1':
@@ -116,7 +120,7 @@ class UV:
     def rotate_selection(obj, origin, angle):
         rot = __class__.make_rotation_transformation(math.radians(angle), origin)
         for polygon_index, polygon in enumerate(obj.data.polygons):
-            if polygon.select:
+            if polygon.select != bpy.context.window_manager.interface_vars.rotate_uv_invert_selection:
                 for i, loop_index in enumerate(polygon.loop_indices):
                     obj.data.uv_layers.active.data[loop_index].uv = rot(obj.data.uv_layers.active.data[loop_index].uv)
 
@@ -146,6 +150,11 @@ class InterfaceVars(bpy.types.PropertyGroup):
         description='Rotate UV of selected polygons to 90 deg',
         default=False
     )
+    rotate_uv_invert_selection = bpy.props.BoolProperty(
+        name='InvertSelection',
+        description='Invert selection of rotating polygons',
+        default=False
+    )
     rotate_origin = bpy.props.EnumProperty(
         items=[
             ('0', '0,0', '0,0', '', 0),
@@ -169,7 +178,9 @@ class VerticalPanel(bpy.types.Panel):
         button.algorithm = 1
         row = self.layout.row()
         row.prop(context.window_manager.interface_vars, 'axis', expand=True)
-        self.layout.prop(context.window_manager.interface_vars, 'rotate_uv')
+        row = self.layout.row()
+        row.prop(context.window_manager.interface_vars, 'rotate_uv')
+        row.prop(context.window_manager.interface_vars, 'rotate_uv_invert_selection')
         row = self.layout.row()
         row.prop(context.window_manager.interface_vars, 'rotate_origin', expand=True)
 
