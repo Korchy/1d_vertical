@@ -21,7 +21,7 @@ bl_info = {
     "name": "Vertical",
     "description": "Search and select the vertical polygons of the mesh",
     "author": "Nikita Akimov, Paul Kotelevets",
-    "version": (1, 0, 0),
+    "version": (1, 0, 1),
     "blender": (2, 79, 0),
     "location": "View3D > Tool panel > 1D > Vertical",
     "doc_url": "https://github.com/Korchy/1d_vertical",
@@ -51,6 +51,7 @@ class Vertical:
 class Vertical_OT_Select(Operator):
     bl_idname = 'vertical.select'
     bl_label = 'Vertical: Select'
+    bl_description = 'Filter polygons that has specific 3D alignment'
     bl_options = {'REGISTER', 'UNDO'}
 
     algorithm = IntProperty(

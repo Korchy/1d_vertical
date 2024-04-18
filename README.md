@@ -33,6 +33,9 @@ The default algorithm is number 1. To call the operator with the second algorith
 
 Version history:
 -
+1.0.1
+- UI improving
+
 1.0.0
 - Integrated to the NA 1D Tools
 
